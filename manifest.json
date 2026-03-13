@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "NotebookLM Source Organizer",
+  "version": "2.0",
+  "description": "Organize sources within individual Google NotebookLM notebooks into custom collapsible folders with bulk selection.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://notebooklm.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://notebooklm.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ]
+    }
+  ]
+}

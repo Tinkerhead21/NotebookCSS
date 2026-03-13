@@ -1,0 +1,556 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+  --enhancer-font: 'Open Sans', sans-serif;
+  --enhancer-folder-bg: #fdfdfd; 
+  --enhancer-header-bg: #f8f9fa;
+  --enhancer-folder-hover: #f1f3f4;
+  --enhancer-accent: #1a73e8;
+  --enhancer-text-primary: #3c4043;
+  --enhancer-text-secondary: #5f6368;
+  --enhancer-border-color: #dadce0;
+  --enhancer-nested-bg: #fbfbfb;
+  --enhancer-folder-active: #e8f0fe;
+  --enhancer-source-active: #f1f3f4;
+  --enhancer-toggle-active: #1a73e8;
+
+  --enhancer-color-0: #4285F4;
+  --enhancer-color-1: #EA4335;
+  --enhancer-color-2: #FBBC04;
+  --enhancer-color-3: #34A853;
+  --enhancer-color-4: #8E24AA;
+  --enhancer-color-5: #00BCD4;
+  --enhancer-color-6: #FF9800;
+  --enhancer-color-7: #E91E63;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --enhancer-folder-bg: #22262b;
+    --enhancer-header-bg: #2d3136;
+    --enhancer-folder-hover: #313335;
+    --enhancer-accent: #8ab4f8;
+    --enhancer-text-primary: #e8eaed;
+    --enhancer-text-secondary: #9aa0a6;
+    --enhancer-border-color: #3c4044;
+    --enhancer-nested-bg: #202124;
+    --enhancer-folder-active: #37729c;
+    --enhancer-source-active: #30435b;
+    --enhancer-toggle-active: #56aae5;
+
+    --enhancer-color-0: #8ab4f8;
+    --enhancer-color-1: #f28b82;
+    --enhancer-color-2: #fde293;
+    --enhancer-color-3: #81c995;
+    --enhancer-color-4: #d7aefb;
+    --enhancer-color-5: #78d9ec;
+    --enhancer-color-6: #fcad70;
+    --enhancer-color-7: #ff8bcb;
+  }
+}
+
+/* ==========================================================================
+   Sources Custom UI Additions
+   ========================================================================== */
+.enhancer-add-folder-btn {
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--mdc-theme-divider, rgba(255, 255, 255, 0.12));
+  padding: 6px 16px;
+  border-radius: 24px;
+  cursor: pointer;
+  font-family: var(--enhancer-font);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+  flex: 1;
+}
+
+.enhancer-add-folder-btn:hover {
+  background-color: var(--mdc-theme-surface-variant, rgba(255, 255, 255, 0.05));
+}
+
+/* Bulk Action Container */
+.enhancer-top-actions-wrapper {
+  display: flex;
+  gap: 8px;
+  width: calc(100% - 32px);
+  margin: 12px 16px;
+  order: -1;
+  flex: 0 0 auto !important;
+  min-height: 36px;
+}
+
+.enhancer-bulk-action-bar {
+  display: flex;
+  background-color: transparent;
+  border: none;
+  flex: 2;
+  position: relative;
+  gap: 4px;
+  align-items: center;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.enhancer-bulk-action-bar.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.enhancer-bulk-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  color: var(--enhancer-text-secondary);
+  font-family: var(--enhancer-font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.enhancer-bulk-btn:hover {
+  background-color: var(--mdc-theme-surface-variant, rgba(255, 255, 255, 0.05));
+  color: var(--enhancer-text-primary);
+}
+
+.enhancer-bulk-btn.danger {
+  color: #E91E63;
+}
+
+/* Grouping container uses a standard gap to separate items */
+.enhancer-flex-grouping-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0;
+}
+
+/* Folder Headers (injected as siblings) */
+.enhancer-folder-header {
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  margin-top: 12px;
+  margin-bottom: 0 !important;
+  padding: 10px 8px;
+  background-color: var(--enhancer-header-bg);
+  border-top: 1px solid var(--enhancer-border-color);
+  border-left: 1px solid var(--enhancer-border-color);
+  border-right: 1px solid var(--enhancer-border-color);
+  border-bottom: none;
+  color: inherit;
+  font-family: var(--enhancer-font);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  flex: 0 0 auto !important; /* Prevent it from expanding vertically */
+  min-height: 40px;
+  z-index: 50; /* Ensure menus drawn from headers float ABOVE nested items over sibling lists */
+}
+
+/* Active State matches Figma / NotebookLM */
+.enhancer-folder-header.active {
+  background-color: var(--enhancer-folder-active) !important;
+}
+
+/* Let the native NotebookLM light/dark theme dictate text color when hovered, but slightly darken bg */
+.enhancer-folder-header:hover {
+  filter: brightness(1.2);
+}
+
+.enhancer-folder-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.enhancer-folder-header.collapsed {
+   border-radius: 12px;
+   border-bottom: 1px solid var(--enhancer-border-color);
+}
+
+.enhancer-hidden,
+.enhancer-source-item.enhancer-hidden {
+   display: none !important;
+}
+
+/* Custom Folder Toggle Switch (Right Side) */
+.enhancer-folder-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.enhancer-folder-toggle-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.enhancer-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--enhancer-text-secondary);
+  transition: .2s;
+  border-radius: 34px;
+}
+
+.enhancer-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+.enhancer-folder-toggle-switch input:checked + .enhancer-slider {
+  background-color: var(--enhancer-toggle-active);
+}
+
+.enhancer-folder-toggle-switch input:checked + .enhancer-slider:before {
+  transform: translateX(14px);
+}
+
+
+
+/* Custom Selection Checkbox Array (Left hover implementation) */
+.enhancer-custom-selector {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.enhancer-folder-header .enhancer-custom-selector {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.enhancer-source-item .enhancer-custom-selector {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background-color: var(--mdc-theme-background); /* Hides native fav icon */
+  border-radius: 2px;
+}
+
+.enhancer-source-item:hover .enhancer-custom-selector,
+.enhancer-folder-header:hover .enhancer-custom-selector,
+.enhancer-flex-grouping-container.selecting-mode .enhancer-custom-selector,
+.enhancer-custom-selector:checked {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Source Item Enhancements */
+.enhancer-source-item {
+  position: relative;
+  transition: background-color 0.1s;
+  padding-left: 32px !important; /* Make room for the custom logic */
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center;
+}
+
+/* Error State styling for failed links */
+.single-source-error-container.enhancer-source-item {
+  background-color: #8c1d18 !important;
+}
+
+.single-source-error-container.enhancer-source-item .enhancer-custom-selector {
+  background-color: #8c1d18 !important; /* Match the error background to hide fav icon */
+}
+
+/* Force Native mat-checkbox (Toggle) to the far right */
+.enhancer-source-item mat-checkbox {
+  order: 99 !important;
+  margin-left: 8px !important;
+  position: relative !important;
+  opacity: 1 !important; /* Always show toggle on right */
+  visibility: visible !important;
+  display: inline-block !important;
+}
+
+/* Force Native Menus to sit just left of the toggle */
+.enhancer-source-item button,
+.enhancer-source-item .mat-mdc-icon-button,
+.enhancer-source-item .mat-icon-button {
+  order: 98 !important;
+  margin-left: auto !important; /* This pushes the Menu & Toggle to the far right, leaving title on left */
+  margin-right: 0 !important;
+}
+
+.enhancer-source-item:has(mat-checkbox .mdc-checkbox__native-control:checked) {
+  background-color: var(--enhancer-source-active) !important;
+}
+
+.enhancer-folder-header {
+  position: relative;
+  overflow: visible !important; /* Allow custom checkbox to hang out left */
+}
+
+/* Tweak nesting margin to give room for checkbox */
+.enhancer-is-nested {
+  margin-left: 0 !important; 
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 32px !important;
+  border-left: 1px solid var(--enhancer-border-color) !important;
+  border-right: 1px solid var(--enhancer-border-color) !important;
+  border-bottom: 1px solid var(--enhancer-border-color) !important;
+  border-top: none !important;
+  background-color: var(--enhancer-folder-bg) !important;
+  border-radius: 0 !important;
+  width: 100% !important; 
+  box-sizing: border-box;
+}
+
+.enhancer-folder-last-item {
+  border-radius: 0 0 12px 12px !important;
+}
+
+/* Convert NotebookLM Native Checkboxes to Toggles */
+mat-checkbox .mdc-checkbox,
+.enhancer-master-toggle .mdc-checkbox,
+.master-checkbox {
+  width: 32px !important;
+  height: 18px !important;
+  position: relative;
+}
+
+mat-checkbox .mdc-checkbox__background,
+.enhancer-master-toggle .mdc-checkbox__background,
+.master-checkbox {
+  border-radius: 12px !important;
+  width: 32px !important;
+  height: 18px !important;
+  border: none !important;
+  background-color: var(--enhancer-text-secondary) !important;
+  left: 0 !important;
+  top: calc(50% - 9px) !important;
+  transition: background-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+mat-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
+.enhancer-master-toggle .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
+.master-checkbox:checked {
+  background-color: var(--enhancer-accent) !important;
+}
+
+mat-checkbox .mdc-checkbox__background::after,
+.enhancer-master-toggle .mdc-checkbox__background::after,
+.master-checkbox::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+
+mat-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::after,
+.enhancer-master-toggle .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background::after,
+.master-checkbox:checked::after {
+  transform: translateX(14px);
+}
+
+mat-checkbox svg.mdc-checkbox__checkmark,
+mat-checkbox .mdc-checkbox__mixedmark,
+.enhancer-master-toggle svg.mdc-checkbox__checkmark,
+.enhancer-master-toggle .mdc-checkbox__mixedmark {
+  display: none !important;
+}
+
+/* Action Menu Trigger (⋮) */
+.enhancer-action-trigger {
+  opacity: 0.3;
+  background: transparent;
+  border: none;
+  color: var(--enhancer-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  margin-right: 4px;
+}
+
+.enhancer-source-item:hover .enhancer-action-trigger {
+  opacity: 1;
+}
+
+.enhancer-action-trigger:hover {
+  background: var(--enhancer-folder-hover);
+  color: var(--enhancer-text-primary);
+}
+
+/* Action Menu Integration */
+.enhancer-native-menu-divider {
+  height: 1px;
+  background-color: var(--enhancer-border-color);
+  margin: 4px 0;
+}
+
+.enhancer-native-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--enhancer-text-primary);
+  font-size: 0.875rem;
+  transition: background-color 0.15s;
+  position: relative;
+}
+
+.enhancer-native-menu-item:hover {
+  background-color: var(--enhancer-folder-hover);
+}
+
+.enhancer-submenu-container {
+  display: none;
+  background: var(--enhancer-folder-bg);
+  border-top: 1px dashed var(--enhancer-border-color);
+  width: 100%;
+  padding: 4px 0;
+}
+
+.enhancer-native-menu-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.enhancer-native-menu-item-wrapper:hover .enhancer-submenu-container {
+  display: block;
+}
+
+.enhancer-submenu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--enhancer-text-primary);
+  font-family: var(--enhancer-font);
+  font-size: 0.85rem;
+  transition: background-color 0.15s;
+}
+
+.enhancer-submenu-item:hover {
+  background-color: var(--mdc-theme-surface-variant, rgba(255, 255, 255, 0.08));
+}
+
+/* (Color classes completely removed, native styling preferred) */
+/* Folder Action Menu */
+.enhancer-folder-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.enhancer-folder-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--enhancer-text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.enhancer-folder-menu-btn:hover {
+  background-color: var(--mdc-theme-surface-variant, rgba(255, 255, 255, 0.08));
+  color: var(--enhancer-text-primary);
+}
+
+.enhancer-folder-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  background: var(--mdc-theme-background, var(--enhancer-folder-bg));
+  border: 1px solid var(--mdc-theme-divider, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 1000;
+  min-width: 160px;
+  color: var(--enhancer-text-primary);
+  overflow: hidden;
+}
+
+/* Action Menu Dropdown */
+.enhancer-action-menu {
+  position: absolute;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--enhancer-folder-bg);
+  border: 1px solid var(--enhancer-border-color);
+  border-radius: 8px;
+  padding: 4px 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 1000;
+  min-width: 160px;
+}
+
+.enhancer-action-menu hr {
+    margin: 4px 0;
+    border: none;
+    border-top: 1px solid var(--enhancer-border-color);
+}
+
+.enhancer-action-item {
+  font-family: inherit;
+  padding: 8px 16px;
+  color: var(--enhancer-text-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.enhancer-action-item:hover {
+  background: var(--enhancer-folder-hover);
+}
