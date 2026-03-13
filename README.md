@@ -5,9 +5,6 @@ Enhance your NotebookLM experience with a professional folder system and a premi
 ## Features
 - 📂 **Custom Folders:** Organize your sources into meaningful groups.
 - ⚡ **Bulk Actions:** Move or ungroup multiple sources in seconds.
-- 🎨 **Premium UI:** Custom styling using Open Sans and a clean, native-feeling design.
-- 🔍 **Error Handling:** Visual indicators for sources that fail to load.
-- 🌓 **Dark Mode Support:** Seamlessly transitions with your system theme.
 
 ## Installation
 1. Download this repository as a ZIP and extract it.
